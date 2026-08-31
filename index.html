@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#101112" />
+  <title>Market Signal — Demo</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="topbar card">
+      <div>
+        <div class="pair-title"><span id="pairName">BTC/USDT</span> <span class="online">● РЫНОК ОНЛАЙН</span></div>
+      </div>
+      <div class="timeframes" id="timeframes">
+        <button>1m</button><button class="active">5m</button><button>15m</button>
+        <button>1h</button><button>4h</button><button>1d</button>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <div class="chart card">
+        <div class="chart-head">
+          <span id="chartLabel">BTC/USDT · 5m</span>
+          <span class="demo-label">DEMO</span>
+        </div>
+        <div class="chart-area">
+          <div class="grid"></div>
+          <svg viewBox="0 0 900 430" preserveAspectRatio="none" class="line-chart" aria-label="Демонстрационный график">
+            <polyline id="chartLine" points="" />
+          </svg>
+          <div class="price-line"><span id="price">78 910,47 $</span></div>
+          <div class="y-labels">
+            <span>79 400</span><span>79 200</span><span>79 000</span>
+            <span>78 800</span><span>78 600</span>
+          </div>
+          <div class="x-labels"><span>20:30</span><span>20:45</span><span>21:00</span><span>21:15</span><span>21:30</span></div>
+        </div>
+      </div>
+
+      <aside class="panel card">
+        <div class="asset-price">
+          <div class="muted">BTC/USD</div>
+          <div class="big-price" id="bigPrice">78 910,47 $</div>
+          <div class="change">+0,41%</div>
+          <div class="online">⌁ Рынок онлайн</div>
+        </div>
+
+        <div class="block">
+          <div class="section-title">АКТИВ</div>
+          <div class="assets" id="assets">
+            <button class="selected" data-pair="BTC/USDT" data-price="78 910,47">BTC</button>
+            <button data-pair="ETH/USDT" data-price="3 820,21">ETH</button>
+            <button data-pair="SOL/USDT" data-price="198,42">SOL</button>
+            <button data-pair="BNB/USDT" data-price="684,10">BNB</button>
+            <button data-pair="XRP/USDT" data-price="2,84">XRP</button>
+            <button data-pair="ADA/USDT" data-price="0,91">ADA</button>
+            <button data-pair="DOGE/USDT" data-price="0,22">DOGE</button>
+            <button data-pair="AVAX/USDT" data-price="24,71">AVAX</button>
+            <button data-pair="LINK/USDT" data-price="21,38">LINK</button>
+            <button data-pair="DOT/USDT" data-price="4,03">DOT</button>
+            <button data-pair="LTC/USDT" data-price="96,15">LTC</button>
+            <button data-pair="TRX/USDT" data-price="0,34">TRX</button>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="section-title">ДЛИТЕЛЬНОСТЬ</div>
+          <div class="durations" id="durations">
+            <button>30s</button><button class="selected">1m</button><button>2m</button><button>5m</button>
+          </div>
+        </div>
+
+        <button class="signal-btn" id="signalBtn">Получить сигнал</button>
+        <div class="demo-note">Демо-режим: кнопка показывает тестовый статус и не является торговой рекомендацией.</div>
+        <div class="result" id="result" hidden>
+          <div class="result-title">ТЕСТОВЫЙ СИГНАЛ</div>
+          <div id="resultText">Сигнал сформирован для демонстрации интерфейса.</div>
+          <div class="result-time" id="resultTime"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="history card">
+      <div class="section-title">ПОСЛЕДНИЕ ТЕСТЫ</div>
+      <div id="historyList" class="history-list">
+        <div class="empty">Нажмите «Получить сигнал», чтобы увидеть тестовую запись.</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

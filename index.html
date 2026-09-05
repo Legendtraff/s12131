@@ -1,96 +1,119 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#101112" />
-  <title>Market Signal — Demo</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Emoji Logo Fit</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
 </head>
 <body>
-  <main class="app">
-    <section class="topbar card">
-      <div>
-        <div class="pair-title"><span id="pairName">BTC/USDT</span> <span class="online">● РЫНОК ОНЛАЙН</span></div>
-      </div>
-      <div class="timeframes" id="timeframes">
-        <button>1m</button><button class="active">5m</button><button>15m</button>
-        <button>1h</button><button>4h</button><button>1d</button>
-      </div>
-    </section>
 
-    <section class="workspace">
-      <div class="chart card">
-        <div class="chart-head">
-          <span id="chartLabel">BTC/USDT · 5m</span>
-          <span class="demo-label">DEMO</span>
-        </div>
-        <div class="chart-area">
-          <div class="grid"></div>
-          <svg viewBox="0 0 900 430" preserveAspectRatio="none" class="line-chart" aria-label="Демонстрационный график">
-            <polyline id="chartLine" points="" />
-          </svg>
-          <div class="price-line"><span id="price">78 910,47 $</span></div>
-          <div class="y-labels">
-            <span>79 400</span><span>79 200</span><span>79 000</span>
-            <span>78 800</span><span>78 600</span>
-          </div>
-          <div class="x-labels"><span>20:30</span><span>20:45</span><span>21:00</span><span>21:15</span><span>21:30</span></div>
-        </div>
-      </div>
+<div class="app">
 
-      <aside class="panel card">
-        <div class="asset-price">
-          <div class="muted">BTC/USD</div>
-          <div class="big-price" id="bigPrice">78 910,47 $</div>
-          <div class="change">+0,41%</div>
-          <div class="online">⌁ Рынок онлайн</div>
-        </div>
+  <header class="topbar">
+    <h1>Emoji&nbsp;Logo&nbsp;Fit</h1>
+    <p class="subtitle">Вставь лого в готовую анимацию, покрась — и забери .tgs</p>
+  </header>
 
-        <div class="block">
-          <div class="section-title">АКТИВ</div>
-          <div class="assets" id="assets">
-            <button class="selected" data-pair="BTC/USDT" data-price="78 910,47">BTC</button>
-            <button data-pair="ETH/USDT" data-price="3 820,21">ETH</button>
-            <button data-pair="SOL/USDT" data-price="198,42">SOL</button>
-            <button data-pair="BNB/USDT" data-price="684,10">BNB</button>
-            <button data-pair="XRP/USDT" data-price="2,84">XRP</button>
-            <button data-pair="ADA/USDT" data-price="0,91">ADA</button>
-            <button data-pair="DOGE/USDT" data-price="0,22">DOGE</button>
-            <button data-pair="AVAX/USDT" data-price="24,71">AVAX</button>
-            <button data-pair="LINK/USDT" data-price="21,38">LINK</button>
-            <button data-pair="DOT/USDT" data-price="4,03">DOT</button>
-            <button data-pair="LTC/USDT" data-price="96,15">LTC</button>
-            <button data-pair="TRX/USDT" data-price="0,34">TRX</button>
-          </div>
-        </div>
+  <section class="uploads">
+    <label class="filebtn" id="templateDropzone">
+      <input type="file" id="templateInput" accept=".json,.tgs" hidden />
+      <span class="filebtn-icon">1</span>
+      <span class="filebtn-text">
+        <strong>Шаблон эмодзи</strong>
+        <small id="templateStatus">JSON или .tgs — не выбран</small>
+      </span>
+    </label>
 
-        <div class="block">
-          <div class="section-title">ДЛИТЕЛЬНОСТЬ</div>
-          <div class="durations" id="durations">
-            <button>30s</button><button class="selected">1m</button><button>2m</button><button>5m</button>
-          </div>
-        </div>
+    <label class="filebtn" id="logoDropzone">
+      <input type="file" id="logoInput" accept=".svg" hidden />
+      <span class="filebtn-icon">2</span>
+      <span class="filebtn-text">
+        <strong>Лого</strong>
+        <small id="logoStatus">SVG — не выбран</small>
+      </span>
+    </label>
+  </section>
 
-        <button class="signal-btn" id="signalBtn">Получить сигнал</button>
-        <div class="demo-note">Демо-режим: кнопка показывает тестовый статус и не является торговой рекомендацией.</div>
-        <div class="result" id="result" hidden>
-          <div class="result-title">ТЕСТОВЫЙ СИГНАЛ</div>
-          <div id="resultText">Сигнал сформирован для демонстрации интерфейса.</div>
-          <div class="result-time" id="resultTime"></div>
-        </div>
-      </aside>
-    </section>
+  <section class="preview-wrap">
+    <div id="preview" class="preview"></div>
+    <p class="empty-hint" id="emptyHint">Загрузите шаблон, чтобы увидеть превью</p>
+  </section>
 
-    <section class="history card">
-      <div class="section-title">ПОСЛЕДНИЕ ТЕСТЫ</div>
-      <div id="historyList" class="history-list">
-        <div class="empty">Нажмите «Получить сигнал», чтобы увидеть тестовую запись.</div>
-      </div>
-    </section>
-  </main>
+  <section class="tree-section" id="treeSection" hidden>
+    <div class="section-head">
+      <h2>Слои</h2>
+      <p>Нажмите на 👁 у слоя/группы, чтобы скрыть его и понять, что это. Нажмите на строку, чтобы выбрать её как место под лого.</p>
+    </div>
+    <div id="layerTree" class="layer-tree"></div>
+  </section>
 
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="app.js"></script>
+  <section class="controls-section" id="controlsSection" hidden>
+    <div class="section-head">
+      <h2>Оформление лого</h2>
+      <p id="selectedSlotLabel">Слот не выбран</p>
+    </div>
+
+    <div class="controls-row">
+      <label class="color-field">
+        <span>Заливка</span>
+        <input type="color" id="fillColor" value="#ffffff" />
+      </label>
+
+      <label class="color-field">
+        <span>Обводка</span>
+        <input type="color" id="strokeColor" value="#000000" />
+      </label>
+
+      <label class="width-field">
+        <span>Толщина обводки</span>
+        <input type="range" id="strokeWidth" min="0" max="40" value="0" />
+        <output id="strokeWidthOut">0</output>
+      </label>
+    </div>
+
+    <button id="applyBtn" class="primary-btn" disabled>Вставить лого</button>
+  </section>
+
+  <section class="controls-section" id="globalColorSection" hidden>
+    <div class="section-head">
+      <h2>Перекрасить весь эмодзи</h2>
+      <p>Меняет заливку/обводку у всех фигур шаблона целиком (не только у лого).</p>
+    </div>
+
+    <div class="controls-row">
+      <label class="color-field">
+        <span>Заливка</span>
+        <input type="color" id="globalFillColor" value="#ffffff" />
+      </label>
+
+      <label class="color-field">
+        <span>Обводка</span>
+        <input type="color" id="globalStrokeColor" value="#000000" />
+      </label>
+
+      <label class="width-field">
+        <span>Толщина обводки</span>
+        <input type="range" id="globalStrokeWidth" min="0" max="40" value="10" />
+        <output id="globalStrokeWidthOut">10</output>
+      </label>
+    </div>
+
+    <button id="globalApplyBtn" class="primary-btn">Перекрасить всё</button>
+  </section>
+
+  <section class="export-section" id="exportSection" hidden>
+    <button id="resetBtn" class="ghost-btn">Сбросить к оригиналу</button>
+    <button id="exportBtn" class="primary-btn">Скачать .tgs</button>
+  </section>
+
+</div>
+
+<script src="svgpath.js"></script>
+<script src="lottie-tools.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
